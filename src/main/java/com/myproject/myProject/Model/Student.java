@@ -1,9 +1,11 @@
-package com.myproject.myProject.model;
+package com.myproject.myProject.Model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 public class Student implements Serializable {
@@ -17,6 +19,9 @@ public class Student implements Serializable {
 
     @Column(name = "roll_number")
     private String rollNumber;
+
+    @OneToMany(mappedBy = "student")
+    private List<Issue> issues;
 
     public Student() {
     }

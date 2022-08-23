@@ -1,7 +1,8 @@
-package com.myproject.myProject.model;
+package com.myproject.myProject.Model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 public class Book implements Serializable {
@@ -19,6 +20,9 @@ public class Book implements Serializable {
     @ManyToOne
     @JoinColumn(name = "book_category_cat_id")
     private BookCategory bookCategory;
+
+    @OneToMany(mappedBy = "book")
+    private List<Issue> issues;
 
     public Book() {
     }
