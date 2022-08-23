@@ -1,16 +1,19 @@
 package com.myproject.myProject.Model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name = "student")
 public class Student implements Serializable {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
@@ -21,7 +24,16 @@ public class Student implements Serializable {
     private String rollNumber;
 
     @OneToMany(mappedBy = "student")
-    private List<Issue> issues;
+    @Fetch(FetchMode.JOIN)
+    private List<Issue> issues = new ArrayList<>();
+
+    public List<Issue> getIssues() {
+        return issues;
+    }
+
+    public void setIssues(List<Issue> issues) {
+        this.issues = issues;
+    }
 
     public Student() {
     }

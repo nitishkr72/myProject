@@ -5,9 +5,11 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 @Entity
+@Table(name = "issue")
 public class Issue implements Serializable {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
@@ -17,11 +19,11 @@ public class Issue implements Serializable {
     @Column(name = "date_return")
     private LocalDate dateReturn;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "book_id")
     private Book book;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "student_id")
     private Student student;
 

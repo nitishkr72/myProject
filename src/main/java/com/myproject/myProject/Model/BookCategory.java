@@ -1,15 +1,19 @@
 package com.myproject.myProject.Model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name = "book_category")
 public class BookCategory implements Serializable {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cat_id")
     private Long id;
 
@@ -17,7 +21,9 @@ public class BookCategory implements Serializable {
     private String name;
 
     @OneToMany(mappedBy = "bookCategory")
-    private List<Book> books;
+    @Fetch(FetchMode.JOIN)
+    @JsonManagedReference
+    private List<Book> books = new ArrayList<>();
 
     public BookCategory() {
     }

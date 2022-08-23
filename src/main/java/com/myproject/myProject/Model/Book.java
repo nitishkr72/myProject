@@ -1,13 +1,20 @@
 package com.myproject.myProject.Model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name = "book")
 public class Book implements Serializable {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "book_id")
     private Long id;
 
@@ -17,12 +24,14 @@ public class Book implements Serializable {
     @Column(name = "author")
     private String author;
 
-    @ManyToOne
-    @JoinColumn(name = "book_category_cat_id")
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinColumn(name = "category_id")
+    @JsonBackReference
     private BookCategory bookCategory;
 
-    @OneToMany(mappedBy = "book")
-    private List<Issue> issues;
+    @OneToMany(mappedBy = "book", fetch = FetchType.LAZY)
+    @Fetch(FetchMode.JOIN)
+    private List<Issue> issues = new ArrayList<>();
 
     public Book() {
     }
@@ -32,6 +41,14 @@ public class Book implements Serializable {
         this.name = name;
         this.author = author;
         this.bookCategory = bookCategory;
+    }
+
+    public List<Issue> getIssues() {
+        return issues;
+    }
+
+    public void setIssues(List<Issue> issues) {
+        this.issues = issues;
     }
 
     public BookCategory getBookCategory() {
